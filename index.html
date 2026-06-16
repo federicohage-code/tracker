@@ -147,9 +147,14 @@ footer .btn{margin:0 4px;display:inline-block}
   var STORE='fh_tracker_app_v2';
   var st; try{st=JSON.parse(localStorage.getItem(STORE))||{}}catch(e){st={}}
   if(!st.ex)st.ex={}; if(!st.bw)st.bw=[]; if(typeof st.prot!=='number')st.prot=0;
+  var SEED={mo:{0:{lw:'75',lr:'7/7/7/6'},2:{lw:'70',lr:'11/9/9'},3:{lw:'40',lr:'14/15/13'},4:{lw:'15',lr:'13/13/13'},5:{lw:'17.5',lr:'11/11'}}};
   var EX=[].slice.call(document.querySelectorAll('.ex'));
   EX.forEach(function(ex){var k=ex.getAttribute('data-d'),i=+ex.getAttribute('data-i');
-    if(!st.ex[k])st.ex[k]=[]; if(!st.ex[k][i])st.ex[k][i]={w:'',r:'',done:0,lw:'',lr:''};});
+    if(!st.ex[k])st.ex[k]=[];
+    var sd=(SEED[k]&&SEED[k][i])||null;
+    if(!st.ex[k][i])st.ex[k][i]={w:'',r:'',done:0,lw:sd?sd.lw:'',lr:sd?sd.lr:''};
+    else if(sd&&!st.ex[k][i].lw){st.ex[k][i].lw=sd.lw;st.ex[k][i].lr=sd.lr;}
+  });
   function save(){try{localStorage.setItem(STORE,JSON.stringify(st))}catch(e){}}
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
   function $(id){return document.getElementById(id)}
